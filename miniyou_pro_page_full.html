@@ -1,0 +1,538 @@
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--purple:#b400ff;--cyan:#00c8ff;--dark:#03000a;--card:#0a0018}
+body{font-family:'Segoe UI',sans-serif;background:var(--dark);color:#fff;overflow-x:hidden}
+.page{max-width:480px;margin:0 auto;position:relative}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;position:sticky;top:0;z-index:100;background:rgba(3,0,10,0.85);backdrop-filter:blur(20px);border-bottom:0.5px solid rgba(255,255,255,0.06)}
+.nav-logo{font-size:16px;font-weight:800;background:linear-gradient(135deg,#b400ff,#00c8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-cta{font-size:11px;padding:5px 14px;border-radius:20px;background:linear-gradient(135deg,#b400ff,#0088ff);color:#fff;border:none;cursor:pointer;font-weight:600;font-family:sans-serif}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;padding:50px 20px 40px;text-align:center}
+canvas#heroCv{position:absolute;inset:0;width:100%;height:100%}
+.hero-content{position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;font-size:10px;letter-spacing:2px;padding:5px 14px;border-radius:20px;border:0.5px solid rgba(180,0,255,0.45);color:rgba(200,150,255,0.9);background:rgba(180,0,255,0.08);margin-bottom:18px;font-family:monospace}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:#b400ff;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+.hero-h1{font-size:32px;font-weight:900;line-height:1.15;margin-bottom:12px;letter-spacing:-0.5px}
+.hero-h1 .grad{background:linear-gradient(135deg,#b400ff,#00c8ff,#ff0066);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.7;max-width:320px;margin:0 auto 28px}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-primary{font-size:13px;padding:11px 24px;border-radius:12px;background:linear-gradient(135deg,#b400ff,#0088ff);color:#fff;border:none;cursor:pointer;font-weight:700;font-family:sans-serif;box-shadow:0 4px 24px rgba(180,0,255,0.35);transition:all 0.2s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(180,0,255,0.5)}
+.btn-ghost{font-size:13px;padding:11px 24px;border-radius:12px;background:transparent;color:rgba(255,255,255,0.6);border:0.5px solid rgba(255,255,255,0.15);cursor:pointer;font-family:sans-serif;transition:all 0.2s}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:#fff}
+.hero-stat-row{display:flex;gap:0;margin-top:28px;border-top:0.5px solid rgba(255,255,255,0.06);padding-top:20px}
+.hero-stat{flex:1;text-align:center;border-right:0.5px solid rgba(255,255,255,0.06)}
+.hero-stat:last-child{border-right:none}
+.stat-num{font-size:20px;font-weight:800;background:linear-gradient(135deg,#b400ff,#00c8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px}
+
+/* SECTION */
+.section{padding:32px 20px}
+.sec-eyebrow{font-size:10px;letter-spacing:2px;color:rgba(180,0,255,0.7);font-family:monospace;margin-bottom:8px;text-align:center}
+.sec-title{font-size:22px;font-weight:800;text-align:center;margin-bottom:6px;line-height:1.2}
+.sec-sub{font-size:12px;color:rgba(255,255,255,0.4);text-align:center;line-height:1.6;margin-bottom:24px}
+
+/* THEME PICKER */
+.theme-picker{padding:0 20px 32px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none;margin-bottom:16px}
+.chips::-webkit-scrollbar{display:none}
+.chip{padding:6px 14px;border-radius:20px;font-size:11px;cursor:pointer;border:0.5px solid;transition:all 0.2s;white-space:nowrap;font-family:sans-serif;flex-shrink:0}
+.preview-wrap{position:relative;border-radius:18px;overflow:hidden;height:320px;border:0.5px solid rgba(255,255,255,0.08);box-shadow:0 0 60px rgba(0,0,0,0.5)}
+canvas#pvCv{position:absolute;inset:0;width:100%;height:100%}
+.pv-card{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:190px;border-radius:18px;padding:20px 16px;text-align:center;backdrop-filter:blur(18px);z-index:2;transition:transform 0.07s ease}
+.pv-av{width:58px;height:58px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;border:2px solid rgba(255,255,255,0.25)}
+.pv-nm{font-size:14px;font-weight:700;margin-bottom:3px}
+.pv-bi{font-size:10px;margin-bottom:12px;opacity:0.6;line-height:1.4}
+.pv-lk{display:block;margin-bottom:6px;padding:7px 0;border-radius:9px;font-size:10px;font-weight:600}
+.pv-ft{font-size:8px;margin-top:8px;letter-spacing:2px;opacity:0.25}
+.pv-lock{position:absolute;inset:0;background:rgba(3,0,10,0.8);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:4;backdrop-filter:blur(6px);border-radius:18px}
+.pv-lock-icon{font-size:32px;margin-bottom:10px;filter:drop-shadow(0 0 12px rgba(180,0,255,0.5))}
+.pv-lock-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:4px}
+.pv-lock-sub{font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:14px;text-align:center;line-height:1.5}
+.pv-lock-btn{font-size:12px;padding:8px 22px;border-radius:20px;background:linear-gradient(135deg,#b400ff,#0088ff);color:#fff;border:none;cursor:pointer;font-weight:700;font-family:sans-serif;transition:transform 0.2s}
+.pv-lock-btn:hover{transform:scale(1.05)}
+.theme-name-bar{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.t-name{font-size:13px;font-weight:600;color:#fff}
+.t-tier{font-size:10px;padding:3px 10px;border-radius:10px}
+
+/* COMPARISON */
+.compare{padding:0 20px 32px}
+.compare-table{border-radius:14px;overflow:hidden;border:0.5px solid rgba(255,255,255,0.08)}
+.compare-header{display:grid;grid-template-columns:1fr 80px 80px;background:rgba(255,255,255,0.04);padding:12px 14px;gap:8px}
+.ch{font-size:11px;font-weight:700;text-align:center;color:rgba(255,255,255,0.5);letter-spacing:0.5px}
+.ch.pro{color:#b400ff}
+.compare-row{display:grid;grid-template-columns:1fr 80px 80px;padding:11px 14px;gap:8px;border-top:0.5px solid rgba(255,255,255,0.05);align-items:center;transition:background 0.2s}
+.compare-row:hover{background:rgba(255,255,255,0.02)}
+.cr-feat{font-size:12px;color:rgba(255,255,255,0.7)}
+.cr-feat span{font-size:10px;color:rgba(255,255,255,0.3);display:block;margin-top:1px}
+.cr-val{text-align:center;font-size:14px}
+
+/* TESTIMONIALS */
+.testi-grid{display:flex;flex-direction:column;gap:10px}
+.testi-card{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px 16px}
+.testi-text{font-size:12px;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:10px}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.testi-name{font-size:12px;font-weight:600;color:#fff}
+.testi-handle{font-size:10px;color:rgba(255,255,255,0.35)}
+.stars{color:#fbbf24;font-size:11px;margin-bottom:6px}
+
+/* PRICING */
+.pricing{padding:0 20px 32px}
+.toggle-wrap{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px}
+.toggle-label{font-size:12px;color:rgba(255,255,255,0.5)}
+.toggle-label.active{color:#fff;font-weight:600}
+.toggle{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.15);cursor:pointer;position:relative;transition:background 0.3s}
+.toggle.on{background:linear-gradient(135deg,#b400ff,#0088ff)}
+.toggle-dot{width:18px;height:18px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left 0.3s;box-shadow:0 2px 6px rgba(0,0,0,0.3)}
+.toggle.on .toggle-dot{left:23px}
+.save-badge{font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(74,222,128,0.15);color:#4ade80;border:0.5px solid rgba(74,222,128,0.3)}
+.price-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.price-card{border-radius:16px;padding:18px 14px;border:0.5px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);position:relative;transition:transform 0.2s}
+.price-card:hover{transform:translateY(-3px)}
+.price-card.pro-card{border-color:rgba(180,0,255,0.5);background:rgba(180,0,255,0.07)}
+.popular-tag{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:9px;padding:3px 12px;border-radius:10px;background:linear-gradient(135deg,#b400ff,#0088ff);color:#fff;white-space:nowrap;font-weight:700;font-family:sans-serif}
+.pc-plan{font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:1px;margin-bottom:6px}
+.pc-price{font-size:26px;font-weight:900;color:#fff;line-height:1}
+.pc-per{font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px;margin-bottom:10px}
+.pc-save{font-size:10px;color:#4ade80;margin-bottom:12px}
+.pc-feats{list-style:none;margin-bottom:14px}
+.pc-feats li{font-size:11px;color:rgba(255,255,255,0.55);padding:3px 0;display:flex;align-items:center;gap:6px;line-height:1.4}
+.pc-feats li::before{content:'✓';color:#4ade80;font-weight:700;flex-shrink:0}
+.pc-feats li.muted::before{content:'✗';color:rgba(255,255,255,0.2)}
+.pc-feats li.muted{color:rgba(255,255,255,0.25)}
+.pc-btn{width:100%;padding:9px 0;border-radius:10px;font-size:12px;font-weight:700;font-family:sans-serif;cursor:pointer;transition:all 0.2s;border:none}
+.pc-btn.free-btn{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.6);border:0.5px solid rgba(255,255,255,0.12)}
+.pc-btn.pro-btn{background:linear-gradient(135deg,#b400ff,#0088ff);color:#fff;box-shadow:0 4px 16px rgba(180,0,255,0.3)}
+.pc-btn.pro-btn:hover{box-shadow:0 6px 24px rgba(180,0,255,0.5);transform:translateY(-1px)}
+
+/* FAQ */
+.faq{padding:0 20px 32px}
+.faq-item{border-bottom:0.5px solid rgba(255,255,255,0.07);padding:14px 0;cursor:pointer}
+.faq-q{font-size:13px;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faq-icon{font-size:16px;color:rgba(255,255,255,0.3);transition:transform 0.3s;flex-shrink:0}
+.faq-a{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.7;max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.3s}
+.faq-item.open .faq-a{max-height:200px;padding-top:8px}
+.faq-item.open .faq-icon{transform:rotate(45deg);color:#b400ff}
+
+/* FINAL CTA */
+.final-cta{margin:0 20px 40px;border-radius:20px;padding:32px 20px;text-align:center;background:linear-gradient(135deg,rgba(180,0,255,0.15),rgba(0,136,255,0.15));border:0.5px solid rgba(180,0,255,0.3);position:relative;overflow:hidden}
+canvas#ctaCv{position:absolute;inset:0;width:100%;height:100%}
+.final-cta-content{position:relative;z-index:2}
+.final-cta h2{font-size:22px;font-weight:900;margin-bottom:8px;line-height:1.2}
+.final-cta p{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:20px;line-height:1.6}
+.final-price{font-size:28px;font-weight:900;background:linear-gradient(135deg,#b400ff,#00c8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px}
+.final-fine{font-size:10px;color:rgba(255,255,255,0.25);margin-top:10px}
+.payment-icons{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.payment-icon{font-size:10px;padding:3px 10px;border-radius:8px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);border:0.5px solid rgba(255,255,255,0.1)}
+</style>
+
+<div class="page">
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-logo">MiniYou</div>
+  <button class="nav-cta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Upgrade ₹99/mo</button>
+</div>
+
+<!-- HERO -->
+<div class="hero" style="min-height:320px">
+  <canvas id="heroCv"></canvas>
+  <div class="hero-content">
+    <div class="hero-badge"><div class="hero-badge-dot"></div>INTRODUCING PRO</div>
+    <h1 class="hero-h1">Your profile.<br><span class="grad">Absolutely legendary.</span></h1>
+    <p class="hero-sub">Free gets you started. Pro makes you unforgettable. See what your profile looks like when it's truly yours.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('preview').scrollIntoView({behavior:'smooth'})">See live preview</button>
+      <button class="btn-ghost" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">View pricing</button>
+    </div>
+    <div class="hero-stat-row">
+      <div class="hero-stat"><div class="stat-num">10+</div><div class="stat-label">Pro themes</div></div>
+      <div class="hero-stat"><div class="stat-num">₹99</div><div class="stat-label">Per month</div></div>
+      <div class="hero-stat"><div class="stat-num">0</div><div class="stat-label">Competitors</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- THEME PREVIEW -->
+<div class="theme-picker" id="preview">
+  <div class="sec-eyebrow">LIVE PREVIEW</div>
+  <div class="sec-title" style="text-align:center;font-size:20px;margin-bottom:6px">Pick a theme. Feel the difference.</div>
+  <div class="sec-sub" style="font-size:12px;color:rgba(255,255,255,0.4);text-align:center;margin-bottom:16px">Pro themes react to your mouse. Try hovering the card.</div>
+  <div class="chips" id="chips"></div>
+  <div class="preview-wrap" id="pvWrap">
+    <canvas id="pvCv"></canvas>
+    <div class="pv-card" id="pvCard"></div>
+    <div class="pv-lock" id="pvLock" style="display:none">
+      <div class="pv-lock-icon">🔒</div>
+      <div class="pv-lock-title">Pro Theme</div>
+      <div class="pv-lock-sub">Unlock all 10 themes<br>for just ₹99/month</div>
+      <button class="pv-lock-btn" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})">Unlock Pro →</button>
+    </div>
+  </div>
+  <div class="theme-name-bar">
+    <div class="t-name" id="tName">Cyberpunk</div>
+    <div class="t-tier" id="tTier" style="background:rgba(74,222,128,0.12);color:#4ade80">FREE</div>
+  </div>
+</div>
+
+<!-- COMPARE -->
+<div class="compare">
+  <div class="sec-eyebrow">COMPARISON</div>
+  <div class="sec-title" style="font-size:20px;margin-bottom:20px">Free vs Pro</div>
+  <div class="compare-table">
+    <div class="compare-header">
+      <div class="ch" style="text-align:left">Feature</div>
+      <div class="ch">Free</div>
+      <div class="ch pro">Pro</div>
+    </div>
+    <div class="compare-row"><div class="cr-feat">Unlimited links</div><div class="cr-val">✅</div><div class="cr-val">✅</div></div>
+    <div class="compare-row"><div class="cr-feat">Public profile<span>Share your card with anyone</span></div><div class="cr-val">✅</div><div class="cr-val">✅</div></div>
+    <div class="compare-row"><div class="cr-feat">QR code sharing</div><div class="cr-val">✅</div><div class="cr-val">✅</div></div>
+    <div class="compare-row"><div class="cr-feat">2 themes<span>Cyberpunk + Minimal</span></div><div class="cr-val">✅</div><div class="cr-val">✅</div></div>
+    <div class="compare-row"><div class="cr-feat">10 Pro themes<span>Marvel, Anime, Sports + more</span></div><div class="cr-val">❌</div><div class="cr-val" style="color:#b400ff;font-size:18px">✦</div></div>
+    <div class="compare-row"><div class="cr-feat">Animated backgrounds<span>Full canvas 3D animations</span></div><div class="cr-val">❌</div><div class="cr-val" style="color:#b400ff;font-size:18px">✦</div></div>
+    <div class="compare-row"><div class="cr-feat">Analytics dashboard<span>Views, clicks, countries</span></div><div class="cr-val">❌</div><div class="cr-val" style="color:#b400ff;font-size:18px">✦</div></div>
+    <div class="compare-row"><div class="cr-feat">Remove branding</div><div class="cr-val">❌</div><div class="cr-val" style="color:#b400ff;font-size:18px">✦</div></div>
+    <div class="compare-row"><div class="cr-feat">Priority support</div><div class="cr-val">❌</div><div class="cr-val" style="color:#b400ff;font-size:18px">✦</div></div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="section" style="padding-top:0">
+  <div class="sec-eyebrow">EARLY USERS</div>
+  <div class="sec-title" style="font-size:20px;margin-bottom:6px">People are already loving it</div>
+  <div class="sec-sub">Real feedback from our beta users</div>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <div class="testi-text">"The Spiderman theme is insane. Every time I share my profile at gaming events people literally stop and ask what site this is."</div>
+      <div class="testi-author">
+        <div class="testi-av" style="background:linear-gradient(135deg,#dc2626,#991b1b)">R</div>
+        <div><div class="testi-name">Rahul S.</div><div class="testi-handle">@rahul_plays · Streamer</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <div class="testi-text">"Finally a link page that doesn't look boring. The sakura theme is perfect for my anime art account. Worth every rupee."</div>
+      <div class="testi-author">
+        <div class="testi-av" style="background:linear-gradient(135deg,#f472b6,#ec4899)">A</div>
+        <div><div class="testi-name">Ananya K.</div><div class="testi-handle">@ananya.art · Artist</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <div class="testi-text">"Switched from Linktree. MiniYou is way more fun, way cheaper, and actually makes my profile stand out. No brainer."</div>
+      <div class="testi-author">
+        <div class="testi-av" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">D</div>
+        <div><div class="testi-name">Dev M.</div><div class="testi-handle">@devbuilds · Developer</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="pricing" id="pricing">
+  <div class="sec-eyebrow">PRICING</div>
+  <div class="sec-title" style="font-size:20px;margin-bottom:6px">Simple. Affordable. Indian.</div>
+  <div class="sec-sub">5-30x cheaper than every competitor</div>
+  <div class="toggle-wrap">
+    <span class="toggle-label active" id="monthlyLabel">Monthly</span>
+    <div class="toggle" id="billingToggle" onclick="toggleBilling()"><div class="toggle-dot"></div></div>
+    <span class="toggle-label" id="yearlyLabel">Yearly</span>
+    <span class="save-badge" id="saveBadge" style="display:none">Save 33%</span>
+  </div>
+  <div class="price-cards">
+    <div class="price-card">
+      <div class="pc-plan">FREE</div>
+      <div class="pc-price">₹0</div>
+      <div class="pc-per">forever</div>
+      <ul class="pc-feats">
+        <li>Unlimited links</li>
+        <li>Public profile</li>
+        <li>QR code</li>
+        <li>2 themes</li>
+        <li class="muted">Pro themes</li>
+        <li class="muted">Analytics</li>
+        <li class="muted">Remove branding</li>
+      </ul>
+      <button class="pc-btn free-btn">Current plan</button>
+    </div>
+    <div class="price-card pro-card">
+      <div class="popular-tag">✦ MOST POPULAR</div>
+      <div class="pc-plan">PRO</div>
+      <div class="pc-price" id="proPrice">₹99</div>
+      <div class="pc-per" id="proPer">per month</div>
+      <div class="pc-save" id="proSave" style="visibility:hidden">Save ₹389/year</div>
+      <ul class="pc-feats">
+        <li>Everything in Free</li>
+        <li>10 Pro themes</li>
+        <li>Animated backgrounds</li>
+        <li>Analytics dashboard</li>
+        <li>Remove branding</li>
+        <li>Priority support</li>
+        <li>Early access features</li>
+      </ul>
+      <button class="pc-btn pro-btn">Upgrade to Pro →</button>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq">
+  <div class="sec-eyebrow">FAQ</div>
+  <div class="sec-title" style="font-size:20px;margin-bottom:20px">Common questions</div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q">Can I cancel anytime? <span class="faq-icon">+</span></div>
+    <div class="faq-a">Yes. Cancel anytime from your dashboard settings. No questions asked. Your profile stays active on the free plan.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q">What payment methods work? <span class="faq-icon">+</span></div>
+    <div class="faq-a">UPI, all Indian debit/credit cards, Netbanking, Paytm, PhonePe via Razorpay. International cards via Stripe.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q">Will more themes be added? <span class="faq-icon">+</span></div>
+    <div class="faq-a">Yes — we're adding new Pro themes every month. DC themes, more anime, sports teams and more. Pro users get all new themes automatically.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q">Is ₹99 really the final price? <span class="faq-icon">+</span></div>
+    <div class="faq-a">Yes for now. We're keeping it at ₹99/month for our early users. This price is locked in for anyone who subscribes before our public launch.</div>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-q">Do themes work on mobile? <span class="faq-icon">+</span></div>
+    <div class="faq-a">Yes. All themes are fully optimised for mobile. The 3D tilt effect uses your phone's gyroscope for an even cooler experience.</div>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<div class="final-cta">
+  <canvas id="ctaCv"></canvas>
+  <div class="final-cta-content">
+    <h2>Ready to stand out?</h2>
+    <p>Join creators, gamers and developers who chose MiniYou over boring link pages.</p>
+    <div class="final-price" id="finalPrice">₹99 / month</div>
+    <button class="btn-primary" style="width:100%;max-width:280px;padding:13px 0;font-size:14px">Get Pro Now →</button>
+    <div class="final-fine">No setup fee · Cancel anytime · Instant access</div>
+    <div class="payment-icons">
+      <span class="payment-icon">UPI</span>
+      <span class="payment-icon">Visa</span>
+      <span class="payment-icon">Mastercard</span>
+      <span class="payment-icon">Netbanking</span>
+      <span class="payment-icon">Stripe</span>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// HERO CANVAS
+const heroCv=document.getElementById('heroCv');
+const heroSection=heroCv.parentElement;
+let HW=heroSection.offsetWidth,HH=320;
+heroCv.width=HW;heroCv.height=HH;
+const hctx=heroCv.getContext('2d');
+const hpts=Array(80).fill(0).map(()=>({x:Math.random()*HW,y:Math.random()*HH,vx:(Math.random()-0.5)*0.35,vy:(Math.random()-0.5)*0.35,r:Math.random()*1.8+0.3,hue:Math.random()>0.5?280:195}));
+
+// PREVIEW CANVAS
+const pvWrap=document.getElementById('pvWrap');
+const pvCv=document.getElementById('pvCv');
+const PW=pvWrap.offsetWidth||360,PH=320;
+pvCv.width=PW;pvCv.height=PH;
+const pctx=pvCv.getContext('2d');
+const pvCard=document.getElementById('pvCard');
+const pvLock=document.getElementById('pvLock');
+
+// CTA CANVAS
+const ctaCv=document.getElementById('ctaCv');
+const ctaWrap=ctaCv.parentElement;
+const CW=ctaWrap.offsetWidth||360,CH=280;
+ctaCv.width=CW;ctaCv.height=CH;
+const cctx=ctaCv.getContext('2d');
+
+const themes=[
+  {key:'cyberpunk',name:'Cyberpunk',tier:'FREE',free:true,
+   chipColor:'rgba(180,0,255,0.6)',chipBg:'rgba(180,0,255,0.1)',chipBorder:'rgba(180,0,255,0.4)',
+   card:{bg:'rgba(8,0,18,0.86)',border:'rgba(180,0,255,0.6)',av:'linear-gradient(135deg,#b400ff,#00c8ff)',nm:'#ecdeff',bi:'rgba(200,170,255,0.6)',lbg:'rgba(170,100,255,0.12)',lbd:'rgba(170,100,255,0.4)',lc:'#ecdeff'},
+   draw(t){
+     pctx.fillStyle='rgba(4,0,12,0.18)';pctx.fillRect(0,0,PW,PH);
+     for(let x=0;x<PW;x+=28){pctx.strokeStyle='rgba(160,80,255,0.07)';pctx.lineWidth=0.6;pctx.beginPath();pctx.moveTo(x,0);pctx.lineTo(x,PH);pctx.stroke();}
+     for(let y=0;y<PH;y+=28){pctx.beginPath();pctx.moveTo(0,y);pctx.lineTo(PW,y);pctx.stroke();}
+     const g=pctx.createRadialGradient(PW*0.5,PH*0.5,0,PW*0.5,PH*0.5,200);
+     g.addColorStop(0,`rgba(180,0,255,${0.1+Math.sin(t)*0.04})`);g.addColorStop(1,'transparent');
+     pctx.fillStyle=g;pctx.fillRect(0,0,PW,PH);
+     for(let i=0;i<100;i++){const sx=((i*137+t*12)%PW),sy=((i*89+t*9)%PH);pctx.beginPath();pctx.arc(sx,sy,0.9,0,Math.PI*2);pctx.fillStyle='rgba(180,100,255,0.35)';pctx.fill();}
+     pctx.strokeStyle=`rgba(0,200,255,${0.12+Math.sin(t)*0.04})`;pctx.lineWidth=1.5;
+     pctx.beginPath();pctx.moveTo(0,PH*0.65);for(let x=0;x<PW;x+=3)pctx.lineTo(x,PH*0.65+Math.sin(x*0.025+t)*16);pctx.stroke();
+   }},
+  {key:'minimal',name:'Minimal',tier:'FREE',free:true,
+   chipColor:'rgba(99,102,241,0.6)',chipBg:'rgba(99,102,241,0.1)',chipBorder:'rgba(99,102,241,0.35)',
+   card:{bg:'rgba(255,255,255,0.93)',border:'rgba(99,102,241,0.3)',av:'linear-gradient(135deg,#6366f1,#8b5cf6)',nm:'#1e1b4b',bi:'rgba(79,70,229,0.55)',lbg:'rgba(99,102,241,0.07)',lbd:'rgba(99,102,241,0.3)',lc:'#1e1b4b'},
+   draw(t){
+     pctx.fillStyle='rgba(248,247,255,1)';pctx.fillRect(0,0,PW,PH);
+     for(let i=0;i<5;i++){pctx.strokeStyle=`rgba(99,102,241,${0.05+Math.sin(t*0.4+i)*0.02})`;pctx.lineWidth=0.8;pctx.beginPath();pctx.arc(PW*0.5,PH*0.5,(55+i*38)+(Math.sin(t*0.25+i)*5),0,Math.PI*2);pctx.stroke();}
+     for(let i=0;i<50;i++){const sx=((i*173)%PW),sy=((i*97)%PH);pctx.beginPath();pctx.arc(sx,sy,1,0,Math.PI*2);pctx.fillStyle='rgba(99,102,241,0.12)';pctx.fill();}
+   }},
+  {key:'spiderman',name:'Spider-Man',tier:'PRO',free:false,
+   chipColor:'rgba(220,30,40,0.6)',chipBg:'rgba(220,30,40,0.1)',chipBorder:'rgba(220,30,40,0.4)',
+   card:{bg:'rgba(10,0,2,0.86)',border:'rgba(220,30,40,0.6)',av:'linear-gradient(135deg,#991b1b,#dc2626)',nm:'#fef2f2',bi:'rgba(254,202,202,0.55)',lbg:'rgba(220,38,38,0.1)',lbd:'rgba(220,38,38,0.45)',lc:'#fef2f2'},
+   draw(t){
+     pctx.fillStyle='rgba(4,0,4,0.2)';pctx.fillRect(0,0,PW,PH);
+     for(let r=1;r<9;r++){pctx.strokeStyle=`rgba(220,30,40,${0.12-r*0.01})`;pctx.lineWidth=0.7;pctx.beginPath();pctx.arc(PW*0.5,PH*0.5,r*30,0,Math.PI*2);pctx.stroke();}
+     for(let i=0;i<8;i++){pctx.strokeStyle='rgba(220,30,40,0.08)';pctx.lineWidth=0.7;const a=i*Math.PI/4+t*0.02;pctx.beginPath();pctx.moveTo(PW*0.5,PH*0.5);pctx.lineTo(PW*0.5+Math.cos(a)*260,PH*0.5+Math.sin(a)*260);pctx.stroke();}
+     const g=pctx.createRadialGradient(PW*0.5,PH*0.5,0,PW*0.5,PH*0.5,120);
+     g.addColorStop(0,`rgba(220,30,40,${0.1+Math.sin(t*2)*0.04})`);g.addColorStop(1,'transparent');
+     pctx.fillStyle=g;pctx.fillRect(0,0,PW,PH);
+   }},
+  {key:'thor',name:'Thor',tier:'PRO',free:false,
+   chipColor:'rgba(100,180,255,0.6)',chipBg:'rgba(100,180,255,0.1)',chipBorder:'rgba(100,180,255,0.35)',
+   card:{bg:'rgba(2,5,18,0.86)',border:'rgba(100,180,255,0.6)',av:'linear-gradient(135deg,#1e3a8a,#2563eb)',nm:'#eff6ff',bi:'rgba(191,219,254,0.55)',lbg:'rgba(29,78,216,0.1)',lbd:'rgba(100,180,255,0.4)',lc:'#eff6ff'},
+   draw(t){
+     pctx.fillStyle='rgba(1,3,10,0.2)';pctx.fillRect(0,0,PW,PH);
+     for(let i=0;i<4;i++){
+       const bx=20+i*(PW/4)+(Math.sin(t*0.5+i)*15);
+       pctx.strokeStyle=`rgba(160,210,255,${0.5-i*0.08})`;pctx.lineWidth=1.5;
+       pctx.beginPath();pctx.moveTo(bx,0);
+       for(let s=0;s<10;s++)pctx.lineTo(bx+(Math.random()-0.5)*20,s*(PH/10));
+       pctx.stroke();
+     }
+     for(let y=0;y<PH;y+=4){pctx.fillStyle='rgba(0,0,20,0.04)';pctx.fillRect(0,y,PW,1);}
+     const g=pctx.createRadialGradient(PW*0.5,PH*0.4,0,PW*0.5,PH*0.4,160);
+     g.addColorStop(0,`rgba(60,120,255,${0.1+Math.sin(t*1.5)*0.04})`);g.addColorStop(1,'transparent');
+     pctx.fillStyle=g;pctx.fillRect(0,0,PW,PH);
+   }},
+  {key:'ironman',name:'Iron Man',tier:'PRO',free:false,
+   chipColor:'rgba(255,120,0,0.6)',chipBg:'rgba(255,120,0,0.1)',chipBorder:'rgba(255,120,0,0.35)',
+   card:{bg:'rgba(8,2,0,0.86)',border:'rgba(255,120,0,0.6)',av:'linear-gradient(135deg,#7f1d1d,#dc2626)',nm:'#fef2f2',bi:'rgba(254,202,202,0.55)',lbg:'rgba(220,38,38,0.1)',lbd:'rgba(255,120,0,0.45)',lc:'#fef2f2'},
+   draw(t){
+     pctx.fillStyle='rgba(6,1,0,0.2)';pctx.fillRect(0,0,PW,PH);
+     const hs=22;
+     for(let hx=0;hx<PW+hs;hx+=hs*1.73)for(let hy=0;hy<PH+hs;hy+=hs*2){
+       const offY=(Math.floor(hx/(hs*1.73))%2)*hs;
+       pctx.strokeStyle='rgba(255,80,0,0.08)';pctx.lineWidth=0.6;pctx.beginPath();
+       for(let k=0;k<6;k++){const a=k*Math.PI/3;pctx.lineTo(hx+Math.cos(a)*hs*0.5,hy+offY+Math.sin(a)*hs*0.5);}
+       pctx.closePath();pctx.stroke();
+     }
+     const g=pctx.createRadialGradient(PW*0.5,PH*0.5,0,PW*0.5,PH*0.5,160);
+     g.addColorStop(0,`rgba(255,100,0,${0.12+Math.sin(t*3)*0.05})`);g.addColorStop(1,'transparent');
+     pctx.fillStyle=g;pctx.fillRect(0,0,PW,PH);
+     const sl=(t*60)%PH;
+     pctx.fillStyle='rgba(255,80,0,0.04)';pctx.fillRect(0,sl,PW,3);
+   }},
+  {key:'sakura',name:'Sakura',tier:'PRO',free:false,
+   chipColor:'rgba(255,140,190,0.6)',chipBg:'rgba(255,140,190,0.1)',chipBorder:'rgba(255,140,190,0.35)',
+   card:{bg:'rgba(28,4,18,0.87)',border:'rgba(255,140,190,0.5)',av:'linear-gradient(135deg,#f472b6,#ec4899)',nm:'#fce7f3',bi:'rgba(249,168,212,0.55)',lbg:'rgba(244,114,182,0.1)',lbd:'rgba(244,114,182,0.4)',lc:'#fce7f3'},
+   draw(t){
+     const g=pctx.createLinearGradient(0,0,0,PH);
+     g.addColorStop(0,'#0d0520');g.addColorStop(1,'#6b1f5a');
+     pctx.fillStyle=g;pctx.fillRect(0,0,PW,PH);
+     for(let i=0;i<60;i++){
+       const px=((i*137+t*10)%PW),py=((i*89+t*14)%PH);
+       pctx.save();pctx.translate(px,py);pctx.rotate(t*0.5+i);
+       pctx.beginPath();pctx.ellipse(0,0,4+Math.sin(t+i)*1,2,0,0,Math.PI*2);
+       pctx.fillStyle=`rgba(255,${130+i%40},${170+i%30},0.5)`;pctx.fill();
+       pctx.restore();
+     }
+   }}
+];
+
+let cur=themes[0],animT=0;
+
+pvWrap.addEventListener('mousemove',e=>{
+  const r=pvWrap.getBoundingClientRect();
+  const nx=(e.clientX-r.left)/PW-0.5,ny=(e.clientY-r.top)/PH-0.5;
+  pvCard.style.transform=`translate(-50%,-50%) perspective(700px) rotateX(${ny*-13}deg) rotateY(${nx*15}deg) scale(1.05)`;
+});
+pvWrap.addEventListener('mouseleave',()=>{pvCard.style.transform='translate(-50%,-50%)';});
+
+function buildChips(){
+  const c=document.getElementById('chips');c.innerHTML='';
+  themes.forEach(th=>{
+    const chip=document.createElement('div');chip.className='chip';
+    chip.style.cssText=`border-color:${cur.key===th.key?th.chipBorder:'rgba(255,255,255,0.1)'};background:${cur.key===th.key?th.chipBg:'transparent'};color:${cur.key===th.key?'#fff':'rgba(255,255,255,0.4)'}`;
+    chip.textContent=th.free?th.name:`${th.name} ✦`;
+    chip.onclick=()=>switchTheme(th);
+    c.appendChild(chip);
+  });
+}
+
+function buildCard(th){
+  const c=th.card;
+  const icons={cyberpunk:'◆',minimal:'◎',spiderman:'◉',thor:'⚡',ironman:'⬡',sakura:'❀'};
+  pvCard.style.cssText=`position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:190px;border-radius:18px;padding:20px 16px;text-align:center;backdrop-filter:blur(18px);z-index:2;transition:transform 0.07s ease;background:${c.bg};border:1px solid ${c.border};box-shadow:0 0 50px rgba(0,0,0,0.6)`;
+  pvCard.innerHTML=`<div class="pv-av" style="background:${c.av};border-color:${c.border}">${icons[th.key]}</div><div class="pv-nm" style="color:${c.nm}">@cybrian</div><div class="pv-bi" style="color:${c.bi}">Creator · Dev · Dreamer</div><div class="pv-lk" style="color:${c.lc};border:1px solid ${c.lbd};background:${c.lbg}">YouTube</div><div class="pv-lk" style="color:${c.lc};border:1px solid ${c.lbd};background:${c.lbg}">Discord</div><div class="pv-lk" style="color:${c.lc};border:1px solid ${c.lbd};background:${c.lbg}">Portfolio</div><div class="pv-ft">MADE WITH MINIYOU</div>`;
+}
+
+function switchTheme(th){
+  cur=th;
+  buildChips();buildCard(th);
+  document.getElementById('tName').textContent=th.name;
+  const tier=document.getElementById('tTier');
+  if(th.free){tier.style.cssText='background:rgba(74,222,128,0.12);color:#4ade80;font-size:10px;padding:3px 10px;border-radius:10px';tier.textContent='FREE';}
+  else{tier.style.cssText='background:rgba(180,0,255,0.12);color:#c084fc;font-size:10px;padding:3px 10px;border-radius:10px';tier.textContent='PRO';}
+  pvLock.style.display=th.free?'none':'flex';
+  pctx.clearRect(0,0,PW,PH);
+}
+
+let isYearly=false;
+function toggleBilling(){
+  isYearly=!isYearly;
+  const tog=document.getElementById('billingToggle');
+  tog.classList.toggle('on',isYearly);
+  document.getElementById('monthlyLabel').classList.toggle('active',!isYearly);
+  document.getElementById('yearlyLabel').classList.toggle('active',isYearly);
+  document.getElementById('saveBadge').style.display=isYearly?'inline':'none';
+  document.getElementById('proPrice').textContent=isYearly?'₹799':'₹99';
+  document.getElementById('proPer').textContent=isYearly?'per year':'per month';
+  document.getElementById('proSave').style.visibility=isYearly?'visible':'hidden';
+  document.getElementById('proSave').textContent='Save ₹389/year';
+  document.getElementById('finalPrice').textContent=isYearly?'₹799 / year':'₹99 / month';
+}
+
+function toggleFaq(el){
+  document.querySelectorAll('.faq-item').forEach(f=>{if(f!==el)f.classList.remove('open');});
+  el.classList.toggle('open');
+}
+
+buildChips();buildCard(cur);
+
+function drawHeroBg(t){
+  hctx.fillStyle='rgba(3,0,10,0.15)';hctx.fillRect(0,0,HW,HH);
+  for(let x=0;x<HW;x+=32){hctx.strokeStyle='rgba(180,0,255,0.05)';hctx.lineWidth=0.5;hctx.beginPath();hctx.moveTo(x,0);hctx.lineTo(x,HH);hctx.stroke();}
+  for(let y=0;y<HH;y+=32){hctx.beginPath();hctx.moveTo(0,y);hctx.lineTo(HW,y);hctx.stroke();}
+  hpts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>HW)p.vx*=-1;if(p.y<0||p.y>HH)p.vy*=-1;
+    hctx.beginPath();hctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    hctx.fillStyle=`hsl(${p.hue},100%,65%)`;hctx.fill();
+  });
+}
+
+function drawCtaBg(t){
+  cctx.clearRect(0,0,CW,CH);
+  for(let i=0;i<40;i++){
+    const cx2=((i*173+t*8)%CW),cy2=((i*97+t*5)%CH);
+    cctx.beginPath();cctx.arc(cx2,cy2,1.2,0,Math.PI*2);
+    cctx.fillStyle=`rgba(180,0,255,${0.2+Math.sin(t+i)*0.1})`;cctx.fill();
+  }
+  for(let i=0;i<3;i++){
+    const rr=50+i*40+Math.sin(t*0.5+i)*10;
+    cctx.strokeStyle=`rgba(180,0,255,${0.06-i*0.015})`;cctx.lineWidth=0.8;
+    cctx.beginPath();cctx.arc(CW*0.5,CH*0.5,rr,0,Math.PI*2);cctx.stroke();
+  }
+}
+
+function loop(){
+  requestAnimationFrame(loop);
+  animT+=0.016;
+  drawHeroBg(animT);
+  cur.draw(animT);
+  drawCtaBg(animT);
+}
+loop();
+</script>
