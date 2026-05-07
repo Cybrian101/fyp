@@ -1,0 +1,292 @@
+
+<style>
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.2rem;padding-top:1rem}
+.tab{padding:6px 14px;border-radius:20px;border:0.5px solid var(--color-border-secondary);font-size:13px;cursor:pointer;background:transparent;color:var(--color-text-secondary);transition:all .15s}
+.tab.active{background:var(--color-background-info);color:var(--color-text-info);border-color:transparent;font-weight:500}
+.sec{display:none}.sec.active{display:block}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-bottom:10px}
+.col-head{font-size:12px;font-weight:500;padding:6px 12px;border-radius:var(--border-radius-md);text-align:center;margin-bottom:6px}
+.gcp-head{background:#E6F1FB;color:#0C447C}
+.aws-head{background:#FAEEDA;color:#633806}
+.row-item{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:6px}
+.cell{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 10px;font-size:13px}
+.cell-gcp{border-left:3px solid #378ADD;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0}
+.cell-aws{border-left:3px solid #EF9F27;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0}
+.service{font-weight:500;color:var(--color-text-primary);font-size:13px}
+.desc{font-size:12px;color:var(--color-text-secondary);margin-top:2px;line-height:1.5}
+.cat-label{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-tertiary);margin:14px 0 6px;padding-left:2px}
+.badge{display:inline-block;font-size:10px;font-weight:500;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.badge-hot{background:#FCEBEB;color:#A32D2D}
+.badge-key{background:#EAF3DE;color:#3B6D11}
+.note{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 12px;font-size:13px;color:var(--color-text-secondary);margin-bottom:8px;line-height:1.5}
+</style>
+
+<h2 class="sr-only">GCP vs AWS concepts side by side — organized by topic category</h2>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('ai')">AI & ML</button>
+  <button class="tab" onclick="show('compute')">Compute</button>
+  <button class="tab" onclick="show('storage')">Storage</button>
+  <button class="tab" onclick="show('data')">Data & DB</button>
+  <button class="tab" onclick="show('network')">Networking</button>
+  <button class="tab" onclick="show('security')">Security & IAM</button>
+  <button class="tab" onclick="show('devops')">DevOps</button>
+</div>
+
+<div id="ai" class="sec active">
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:8px">
+    <div class="col-head gcp-head">GCP (GCDL)</div>
+    <div class="col-head aws-head">AWS (AIF-C01)</div>
+  </div>
+
+  <div class="cat-label">Managed LLM / Foundation model platform <span class="badge badge-hot">most tested</span></div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Vertex AI</div><div class="desc">Unified ML platform — train, deploy, monitor. Hosts Gemini models + third-party models.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon Bedrock</div><div class="desc">Managed FM service. Access Claude, Llama, Titan, Mistral, Cohere via API. No infra to manage.</div></div>
+  </div>
+
+  <div class="cat-label">AI assistant / Copilot product</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Gemini (formerly Bard)</div><div class="desc">Google's LLM family. Gemini Pro, Ultra, Nano. Accessible via Vertex AI or direct API.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon Q</div><div class="desc">Q Business (enterprise search/chat), Q Developer (code assistant). Know both variants.</div></div>
+  </div>
+
+  <div class="cat-label">RAG / Knowledge retrieval <span class="badge badge-hot">most tested</span></div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Vertex AI Search</div><div class="desc">Grounding + RAG on enterprise docs. Also called "Vertex AI Agent Builder" in newer docs.</div></div>
+    <div class="cell cell-aws"><div class="service">Bedrock Knowledge Bases</div><div class="desc">Connect S3 docs to LLMs via embeddings + vector search. Fully managed RAG pipeline.</div></div>
+  </div>
+
+  <div class="cat-label">Agents / Orchestration</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Vertex AI Agents</div><div class="desc">Build multi-step AI agents using Gemini. Integrates with tools and APIs.</div></div>
+    <div class="cell cell-aws"><div class="service">Agents for Amazon Bedrock</div><div class="desc">Orchestrate multi-step tasks with FM + tools + Lambda actions. Know action groups concept.</div></div>
+  </div>
+
+  <div class="cat-label">ML model training & AutoML</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Vertex AI AutoML</div><div class="desc">No-code model training for tabular, image, text, video data.</div></div>
+    <div class="cell cell-aws"><div class="service">SageMaker Canvas / Autopilot</div><div class="desc">Canvas = no-code ML. Autopilot = automated model selection & tuning.</div></div>
+  </div>
+
+  <div class="cat-label">Model monitoring & bias detection <span class="badge badge-key">responsible AI</span></div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Vertex AI Model Monitor</div><div class="desc">Detect data drift, skew, and feature attribution changes in deployed models.</div></div>
+    <div class="cell cell-aws"><div class="service">SageMaker Clarify</div><div class="desc">Detects bias in data and models. Provides explainability reports (SHAP values).</div></div>
+  </div>
+
+  <div class="cat-label">Pre-built AI APIs (vision, speech, NLP)</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud Vision, Speech-to-Text, Natural Language, Translation</div><div class="desc">Individual APIs for each modality. Know which API does what.</div></div>
+    <div class="cell cell-aws"><div class="service">Rekognition, Transcribe, Comprehend, Translate, Polly, Textract</div><div class="desc">Rekognition=images/video, Transcribe=speech→text, Comprehend=NLP, Polly=text→speech, Textract=OCR.</div></div>
+  </div>
+
+  <div class="cat-label">Vector / Embedding search</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Vertex AI Vector Search (Matching Engine)</div><div class="desc">Managed vector database for similarity search at scale.</div></div>
+    <div class="cell cell-aws"><div class="service">OpenSearch Service / pgvector on RDS</div><div class="desc">AWS uses OpenSearch or Aurora pgvector for vector storage. No dedicated vector DB service.</div></div>
+  </div>
+
+  <div class="note">Both exams test: what is an embedding, what is RAG, difference between fine-tuning vs prompting, hallucination causes, and responsible AI principles. These concepts are cloud-agnostic — learn once, apply to both.</div>
+</div>
+
+<div id="compute" class="sec">
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:8px">
+    <div class="col-head gcp-head">GCP</div>
+    <div class="col-head aws-head">AWS</div>
+  </div>
+
+  <div class="cat-label">Virtual machines</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Compute Engine</div><div class="desc">GCP's IaaS VM service. Choose machine type, OS, region. Preemptible VMs = cheaper but interruptible.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon EC2</div><div class="desc">AWS VMs. Know instance families (T=general, M=memory, C=compute, G=GPU). Spot = cheap + interruptible.</div></div>
+  </div>
+
+  <div class="cat-label">Serverless functions <span class="badge badge-hot">frequently tested</span></div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud Functions / Cloud Run</div><div class="desc">Functions = event-triggered code. Cloud Run = containerized apps, scales to zero.</div></div>
+    <div class="cell cell-aws"><div class="service">AWS Lambda</div><div class="desc">Event-triggered functions. Pairs with API Gateway for REST endpoints. Max 15 min timeout.</div></div>
+  </div>
+
+  <div class="cat-label">Managed containers / Kubernetes</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Google Kubernetes Engine (GKE)</div><div class="desc">Managed Kubernetes. GKE Autopilot = fully managed node provisioning.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon EKS / ECS</div><div class="desc">EKS = managed Kubernetes. ECS = AWS-native container orchestration (simpler than K8s).</div></div>
+  </div>
+
+  <div class="cat-label">App platform / PaaS</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">App Engine</div><div class="desc">PaaS — deploy code without managing infrastructure. Standard vs Flexible environments.</div></div>
+    <div class="cell cell-aws"><div class="service">AWS Elastic Beanstalk</div><div class="desc">PaaS wrapper around EC2. Upload code, AWS handles scaling and deployment.</div></div>
+  </div>
+</div>
+
+<div id="storage" class="sec">
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:8px">
+    <div class="col-head gcp-head">GCP</div>
+    <div class="col-head aws-head">AWS</div>
+  </div>
+
+  <div class="cat-label">Object storage <span class="badge badge-hot">most tested</span></div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud Storage (GCS)</div><div class="desc">Buckets for unstructured data. Storage classes: Standard, Nearline, Coldline, Archive.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon S3</div><div class="desc">Industry standard. Storage classes: Standard, IA, Glacier. Know lifecycle policies and versioning.</div></div>
+  </div>
+
+  <div class="cat-label">Block storage (VM disks)</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Persistent Disk / Hyperdisk</div><div class="desc">Attached to Compute Engine VMs. Zonal or regional. SSD or HDD.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon EBS</div><div class="desc">Elastic Block Store — attached to EC2. gp3 = general purpose SSD. io2 = high IOPS.</div></div>
+  </div>
+
+  <div class="cat-label">File / shared storage</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Filestore</div><div class="desc">Managed NFS file storage. Shared across multiple VMs.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon EFS</div><div class="desc">Elastic File System — managed NFS, scales automatically. For shared access across EC2.</div></div>
+  </div>
+</div>
+
+<div id="data" class="sec">
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:8px">
+    <div class="col-head gcp-head">GCP</div>
+    <div class="col-head aws-head">AWS</div>
+  </div>
+
+  <div class="cat-label">Data warehouse <span class="badge badge-hot">frequently tested</span></div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">BigQuery</div><div class="desc">Serverless data warehouse. BigQuery ML lets you run ML models with SQL. Columnar storage.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon Redshift</div><div class="desc">Managed data warehouse. Columnar storage. Redshift ML integrates SageMaker for in-DB ML.</div></div>
+  </div>
+
+  <div class="cat-label">Managed relational DB</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud SQL / Cloud Spanner</div><div class="desc">Cloud SQL = managed MySQL/PostgreSQL. Spanner = globally distributed relational DB.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon RDS / Aurora</div><div class="desc">RDS = managed MySQL/PostgreSQL/Oracle. Aurora = AWS-native, 5x faster than MySQL.</div></div>
+  </div>
+
+  <div class="cat-label">NoSQL / document DB</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Firestore / Bigtable</div><div class="desc">Firestore = document DB (like MongoDB). Bigtable = wide-column, low latency, IoT/analytics.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon DynamoDB</div><div class="desc">Key-value + document NoSQL. Single-digit ms latency. Know partition keys, sort keys, GSI.</div></div>
+  </div>
+
+  <div class="cat-label">Data pipeline / ETL</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud Dataflow / Dataproc</div><div class="desc">Dataflow = Apache Beam managed (stream+batch ETL). Dataproc = managed Spark/Hadoop.</div></div>
+    <div class="cell cell-aws"><div class="service">AWS Glue / EMR</div><div class="desc">Glue = serverless ETL + data catalog. EMR = managed Spark/Hadoop clusters.</div></div>
+  </div>
+</div>
+
+<div id="network" class="sec">
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:8px">
+    <div class="col-head gcp-head">GCP</div>
+    <div class="col-head aws-head">AWS</div>
+  </div>
+
+  <div class="cat-label">Virtual private network <span class="badge badge-hot">frequently tested</span></div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">VPC (Virtual Private Cloud)</div><div class="desc">GCP VPCs are global by default (span regions). Subnets are regional.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon VPC</div><div class="desc">AWS VPCs are regional. Know subnets (public vs private), route tables, NAT gateway, IGW.</div></div>
+  </div>
+
+  <div class="cat-label">Load balancing</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud Load Balancing</div><div class="desc">Global HTTP(S), TCP, UDP. Google's LB is global by default — single anycast IP.</div></div>
+    <div class="cell cell-aws"><div class="service">Elastic Load Balancer (ALB/NLB/CLB)</div><div class="desc">ALB = layer 7 (HTTP). NLB = layer 4 (TCP). Know when to use each.</div></div>
+  </div>
+
+  <div class="cat-label">CDN</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud CDN</div><div class="desc">Integrates with Cloud Load Balancing. Cache static content at Google's edge nodes.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon CloudFront</div><div class="desc">Global CDN with edge locations. Integrates with S3, EC2, API Gateway. Supports Lambda@Edge.</div></div>
+  </div>
+
+  <div class="cat-label">DNS</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud DNS</div><div class="desc">Managed authoritative DNS. Low-latency global serving.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon Route 53</div><div class="desc">DNS + domain registration + health checks + routing policies (latency, failover, geolocation).</div></div>
+  </div>
+</div>
+
+<div id="security" class="sec">
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:8px">
+    <div class="col-head gcp-head">GCP</div>
+    <div class="col-head aws-head">AWS</div>
+  </div>
+
+  <div class="cat-label">Identity & access management <span class="badge badge-hot">most tested</span></div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud IAM</div><div class="desc">Roles, members, policies. Know primitive roles (Owner/Editor/Viewer) vs predefined vs custom. Service accounts for apps.</div></div>
+    <div class="cell cell-aws"><div class="service">AWS IAM</div><div class="desc">Users, groups, roles, policies (JSON). Know least privilege. IAM roles for EC2/Lambda = no hardcoded creds.</div></div>
+  </div>
+
+  <div class="cat-label">Secrets / key management</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Secret Manager / Cloud KMS</div><div class="desc">Secret Manager = store API keys/passwords. KMS = encryption key management.</div></div>
+    <div class="cell cell-aws"><div class="service">AWS Secrets Manager / KMS</div><div class="desc">Secrets Manager = rotate + store secrets. KMS = create and control encryption keys. Know difference from Parameter Store.</div></div>
+  </div>
+
+  <div class="cat-label">Threat detection / Security monitoring</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Security Command Center</div><div class="desc">Centralized security posture. Detects misconfigs, vulnerabilities across GCP resources.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon GuardDuty</div><div class="desc">Threat detection using ML on CloudTrail, VPC flow logs, DNS logs. Know it's ML-based.</div></div>
+  </div>
+
+  <div class="cat-label">Data privacy / PII detection</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud DLP (Data Loss Prevention)</div><div class="desc">Discover, classify, mask sensitive data (PII, credit cards) in GCS, BigQuery, Datastore.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon Macie</div><div class="desc">Uses ML to find and protect sensitive data in S3. Classifies PII automatically.</div></div>
+  </div>
+
+  <div class="cat-label">Audit logging</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud Audit Logs</div><div class="desc">Admin activity, data access, system events. Stored in Cloud Logging.</div></div>
+    <div class="cell cell-aws"><div class="service">AWS CloudTrail</div><div class="desc">Records every API call in AWS. Who did what, when, from where. Essential for compliance.</div></div>
+  </div>
+</div>
+
+<div id="devops" class="sec">
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:8px">
+    <div class="col-head gcp-head">GCP</div>
+    <div class="col-head aws-head">AWS</div>
+  </div>
+
+  <div class="cat-label">CI/CD pipeline</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud Build / Cloud Deploy</div><div class="desc">Cloud Build = CI (build, test). Cloud Deploy = managed CD to GKE, Cloud Run, GCE.</div></div>
+    <div class="cell cell-aws"><div class="service">CodePipeline / CodeBuild / CodeDeploy</div><div class="desc">CodePipeline = orchestrator. CodeBuild = compile/test. CodeDeploy = deploy to EC2/Lambda/ECS.</div></div>
+  </div>
+
+  <div class="cat-label">Container registry</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Artifact Registry</div><div class="desc">Store Docker images, Maven, npm packages. Replaced Container Registry.</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon ECR</div><div class="desc">Elastic Container Registry. Private Docker image store. Integrates with ECS/EKS.</div></div>
+  </div>
+
+  <div class="cat-label">Monitoring & logging <span class="badge badge-key">ops questions</span></div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Cloud Monitoring / Cloud Logging</div><div class="desc">Monitoring = metrics, dashboards, alerts. Logging = log storage and analysis (Cloud Logging formerly Stackdriver).</div></div>
+    <div class="cell cell-aws"><div class="service">Amazon CloudWatch</div><div class="desc">Metrics, logs, alarms, dashboards in one service. Know CloudWatch Logs Insights for querying logs.</div></div>
+  </div>
+
+  <div class="cat-label">Infrastructure as code</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Deployment Manager / Terraform</div><div class="desc">Deployment Manager = GCP-native IaC. Terraform = preferred multi-cloud IaC in practice.</div></div>
+    <div class="cell cell-aws"><div class="service">AWS CloudFormation / Terraform</div><div class="desc">CloudFormation = AWS-native IaC (YAML/JSON templates). CDK = write IaC in Python/JS/Java.</div></div>
+  </div>
+
+  <div class="cat-label">Messaging / event streaming</div>
+  <div class="row-item">
+    <div class="cell cell-gcp"><div class="service">Pub/Sub</div><div class="desc">Managed message queue. Decouples producers and consumers. At-least-once delivery.</div></div>
+    <div class="cell cell-aws"><div class="service">SQS / SNS / EventBridge</div><div class="desc">SQS = queue. SNS = pub/sub notifications. EventBridge = event bus for routing events between services.</div></div>
+  </div>
+</div>
+
+<script>
+function show(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
